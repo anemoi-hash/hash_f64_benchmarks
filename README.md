@@ -1,16 +1,10 @@
 # hash
 
-This crate provides an implementation of algebraic cryptographic hash functions.
+This crate provides a minimal implementation of several algebraic cryptographic hash functions over a 64-bit prime field.
 
 * This implementation can be used in `no-std` environments by relying on the `alloc` crate instead.
 
 **WARNING:** This is an ongoing, prototype implementation subject to changes. In particular, it has not been audited and may contain bugs and security flaws. This implementation is NOT ready for production use.
-
-It currently contains:
-
-* an instantiation of Rescue-Prime over a 64-bit prime field with state width 8 and capacity 4
-* an instantiation of Rescue-Prime over a 64-bit prime field with state width 12 and capacity 4
-* an instantiation of Rescue-Prime over a 64-bit prime field with state width 14 and capacity 7
 
 ## License
 
