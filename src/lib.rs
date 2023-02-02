@@ -46,11 +46,14 @@ pub mod traits;
 #[cfg(feature = "f64")]
 mod f64_utils;
 
-mod rescue_prime;
-pub use rescue_prime::*;
+mod anemoi;
+pub use anemoi::*;
 
 mod griffin;
 pub use griffin::*;
 
-mod anemoi;
-pub use anemoi::*;
+mod rescue_prime;
+pub use rescue_prime::*;
+
+mod poseidon;
+pub use poseidon::*;

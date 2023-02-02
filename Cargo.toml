@@ -36,6 +36,11 @@ harness = false
 required-features = ["f64"]
 
 [[bench]]
+name = "poseidon"
+harness = false
+required-features = ["f64"]
+
+[[bench]]
 name = "rescue_prime"
 harness = false
 required-features = ["f64"]
