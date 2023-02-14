@@ -39,8 +39,8 @@ pub const NUM_COLUMNS: usize = 4;
 /// Four elements (32-bytes) are returned as digest.
 pub const DIGEST_SIZE: usize = 4;
 
-/// The number of rounds is set to 10 to provide 128-bit security level.
-pub const NUM_HASH_ROUNDS: usize = 10;
+/// The number of rounds is set to 11 to provide 128-bit security level.
+pub const NUM_HASH_ROUNDS: usize = 11;
 
 // HELPER FUNCTIONS
 // ================================================================================================
