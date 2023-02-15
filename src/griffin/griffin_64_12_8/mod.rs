@@ -106,37 +106,63 @@ pub(crate) fn apply_mds(state: &mut [Fp; STATE_WIDTH]) {
         state[11].output_unreduced_internal() as u128,
     ];
 
-    // Fully unroll the matrix-vector products
-    let coeff_sum: u128 = x.iter().sum();
-    let mut result = [0u128; STATE_WIDTH];
-    result[0] = coeff_sum + 5 * x[0] + 3 * x[1] + x[2] + x[3] + 2 * x[4] + x[5] + 2 * x[8] + x[9];
-    result[1] = coeff_sum + x[0] + 5 * x[1] + 3 * x[2] + x[3] + 2 * x[5] + x[6] + 2 * x[9] + x[10];
-    result[2] = coeff_sum + x[0] + x[1] + 5 * x[2] + 3 * x[3] + 2 * x[6] + x[7] + 2 * x[10] + x[11];
-    result[3] = coeff_sum + 3 * x[0] + x[1] + x[2] + 5 * x[3] + x[4] + 2 * x[7] + x[8] + 2 * x[11];
-    result[4] = coeff_sum + 2 * x[0] + x[1] + 5 * x[4] + 3 * x[5] + x[6] + x[7] + 2 * x[8] + x[9];
-    result[5] = coeff_sum + 2 * x[1] + x[2] + x[4] + 5 * x[5] + 3 * x[6] + x[7] + 2 * x[9] + x[10];
-    result[6] = coeff_sum + 2 * x[2] + x[3] + x[4] + x[5] + 5 * x[6] + 3 * x[7] + 2 * x[10] + x[11];
-    result[7] = coeff_sum + x[0] + 2 * x[3] + 3 * x[4] + x[5] + x[6] + 5 * x[7] + x[8] + 2 * x[11];
-    result[8] = coeff_sum + 2 * x[0] + x[1] + 2 * x[4] + x[5] + 5 * x[8] + 3 * x[9] + x[10] + x[11];
-    result[9] = coeff_sum + 2 * x[1] + x[2] + 2 * x[5] + x[6] + x[8] + 5 * x[9] + 3 * x[10] + x[11];
-    result[10] =
-        coeff_sum + 2 * x[2] + x[3] + 2 * x[6] + x[7] + x[8] + x[9] + 5 * x[10] + 3 * x[11];
-    result[11] =
-        coeff_sum + x[0] + 2 * x[3] + x[4] + 2 * x[7] + 3 * x[8] + x[9] + x[10] + 5 * x[11];
+    const T4: usize = STATE_WIDTH / 4;
 
+    let mut result = [0u128; STATE_WIDTH];
+
+    // Apply first matrix
+    for i in 0..T4 {
+        let start_index = i * 4;
+        let mut t0 = x[start_index];
+        t0 += x[start_index + 1];
+        let mut t1 = x[start_index + 2];
+        t1 += x[start_index + 3];
+        let mut t2 = x[start_index + 1];
+        t2 <<= 1;
+        t2 += t1;
+        let mut t3 = x[start_index + 3];
+        t3 <<= 1;
+        t3 += t0;
+        let mut t4 = t1;
+        t4 <<= 2;
+        t4 += t3;
+        let mut t5 = t0;
+        t5 <<= 2;
+        t5 += t2;
+        let mut t6 = t3;
+        t6 += t5;
+        let mut t7 = t2;
+        t7 += t4;
+
+        result[start_index] = t6;
+        result[start_index + 1] = t5;
+        result[start_index + 2] = t7;
+        result[start_index + 3] = t4;
+    }
+
+    // Apply second matrix
+    let mut stored = [0u128; 4];
+    for l in 0..4 {
+        stored[l] = result[l];
+        for j in 1..T4 {
+            stored[l] += result[4 * j + l];
+        }
+    }
+
+    // Final addition and modular reduction
     state.copy_from_slice(&[
-        Fp::from_raw_unchecked(reduce_u96(result[0])),
-        Fp::from_raw_unchecked(reduce_u96(result[1])),
-        Fp::from_raw_unchecked(reduce_u96(result[2])),
-        Fp::from_raw_unchecked(reduce_u96(result[3])),
-        Fp::from_raw_unchecked(reduce_u96(result[4])),
-        Fp::from_raw_unchecked(reduce_u96(result[5])),
-        Fp::from_raw_unchecked(reduce_u96(result[6])),
-        Fp::from_raw_unchecked(reduce_u96(result[7])),
-        Fp::from_raw_unchecked(reduce_u96(result[8])),
-        Fp::from_raw_unchecked(reduce_u96(result[9])),
-        Fp::from_raw_unchecked(reduce_u96(result[10])),
-        Fp::from_raw_unchecked(reduce_u96(result[11])),
+        Fp::from_raw_unchecked(reduce_u96(result[0] + stored[0])),
+        Fp::from_raw_unchecked(reduce_u96(result[1] + stored[1])),
+        Fp::from_raw_unchecked(reduce_u96(result[2] + stored[2])),
+        Fp::from_raw_unchecked(reduce_u96(result[3] + stored[3])),
+        Fp::from_raw_unchecked(reduce_u96(result[4] + stored[0])),
+        Fp::from_raw_unchecked(reduce_u96(result[5] + stored[1])),
+        Fp::from_raw_unchecked(reduce_u96(result[6] + stored[2])),
+        Fp::from_raw_unchecked(reduce_u96(result[7] + stored[3])),
+        Fp::from_raw_unchecked(reduce_u96(result[8] + stored[0])),
+        Fp::from_raw_unchecked(reduce_u96(result[9] + stored[1])),
+        Fp::from_raw_unchecked(reduce_u96(result[10] + stored[2])),
+        Fp::from_raw_unchecked(reduce_u96(result[11] + stored[3])),
     ]);
 }
 
