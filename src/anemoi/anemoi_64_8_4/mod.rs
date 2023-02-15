@@ -89,6 +89,8 @@ pub(crate) fn apply_mds(state: &mut [Fp; STATE_WIDTH]) {
         state[4].output_unreduced_internal() as u128,
     ];
 
+    // MDS layer over X vector
+
     x[0] += x[1];
     x[2] += x[3];
     x[3] += 7 * x[0];
@@ -98,10 +100,7 @@ pub(crate) fn apply_mds(state: &mut [Fp; STATE_WIDTH]) {
     x[1] += x[2];
     x[3] += x[0];
 
-    state[0] = Fp::from_raw_unchecked(reduce_u96(x[0]));
-    state[1] = Fp::from_raw_unchecked(reduce_u96(x[1]));
-    state[2] = Fp::from_raw_unchecked(reduce_u96(x[2]));
-    state[3] = Fp::from_raw_unchecked(reduce_u96(x[3]));
+    // MDS layer over Y vector
 
     y[0] += y[1];
     y[2] += y[3];
@@ -111,6 +110,24 @@ pub(crate) fn apply_mds(state: &mut [Fp; STATE_WIDTH]) {
     y[2] += 7 * y[3];
     y[1] += y[2];
     y[3] += y[0];
+
+    // Before applying modular reduction, we perform a final
+    // Pseudo-Hadamard transform on each pair (x_i, y_i).
+
+    y[0] += x[0];
+    y[1] += x[1];
+    y[2] += x[2];
+    y[3] += x[3];
+
+    x[0] += y[0];
+    x[1] += y[1];
+    x[2] += y[2];
+    x[3] += y[3];
+
+    state[0] = Fp::from_raw_unchecked(reduce_u96(x[0]));
+    state[1] = Fp::from_raw_unchecked(reduce_u96(x[1]));
+    state[2] = Fp::from_raw_unchecked(reduce_u96(x[2]));
+    state[3] = Fp::from_raw_unchecked(reduce_u96(x[3]));
 
     state[4] = Fp::from_raw_unchecked(reduce_u96(y[0]));
     state[5] = Fp::from_raw_unchecked(reduce_u96(y[1]));
