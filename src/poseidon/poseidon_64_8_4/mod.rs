@@ -20,6 +20,8 @@ mod round_constants;
 pub use digest::PoseidonDigest;
 pub use hasher::PoseidonHash;
 
+use self::round_constants::ARK;
+
 // RESCUE CONSTANTS
 // ================================================================================================
 
@@ -60,6 +62,45 @@ pub(crate) fn apply_mds(state: &mut [Fp; STATE_WIDTH]) {
 }
 
 #[inline(always)]
+/// Applies matrix-vector multiplication of the current
+/// hash state with the Poseidon M_I matrix.
+///
+/// The matrix is in transposed form.
+pub(crate) fn apply_mi(state: &mut [Fp; STATE_WIDTH]) {
+    let mut result = [Fp::zero(); STATE_WIDTH];
+    for (i, r) in result.iter_mut().enumerate() {
+        for (j, s) in state.iter().enumerate() {
+            *r += mds::M_I[j][i] * s;
+        }
+    }
+
+    state.copy_from_slice(&result);
+}
+
+#[inline(always)]
+/// Applies matrix-vector multiplication of the current
+/// hash state with the Poseidon MDS matrix.
+pub(crate) fn cheap_matrix_mul(state: &mut [Fp; STATE_WIDTH], round: usize) {
+    let mut column_1 = [mds::M_00; STATE_WIDTH];
+    column_1[1..].copy_from_slice(&mds::W_HAT[NUM_PARTIAL_ROUNDS - round - 1]);
+
+    let res_0 = column_1.iter().zip(state.iter()).map(|(a, b)| a * b).sum();
+    let mul_row: Vec<Fp> = mds::V_COL[NUM_PARTIAL_ROUNDS - round - 1]
+        .iter()
+        .take(STATE_WIDTH - 1)
+        .map(|x| x * state[0])
+        .collect();
+    let add_row: Vec<Fp> = mul_row
+        .iter()
+        .zip(state.iter().skip(1))
+        .map(|(x, y)| x + y)
+        .collect();
+
+    state[0] = res_0;
+    state[1..].copy_from_slice(&add_row);
+}
+
+#[inline(always)]
 pub(crate) fn apply_full_sbox(state: &mut [Fp; STATE_WIDTH]) {
     state.iter_mut().for_each(pow_7);
 }
@@ -81,16 +122,14 @@ pub(crate) fn apply_permutation(state: &mut [Fp; STATE_WIDTH]) {
         apply_full_round(state, i);
     }
 
-    for i in 0..NUM_PARTIAL_ROUNDS {
-        apply_partial_round(state, NUM_HALF_FULL_ROUNDS + i);
-    }
+    apply_partial_rounds(state);
 
     for i in 0..NUM_HALF_FULL_ROUNDS {
         apply_full_round(state, NUM_PARTIAL_ROUNDS + NUM_HALF_FULL_ROUNDS + i);
     }
 }
 
-/// Poseidon full round function;
+/// Poseidon full round function.
 #[inline(always)]
 pub(crate) fn apply_full_round(state: &mut [Fp; STATE_WIDTH], step: usize) {
     // determine which round constants to use
@@ -104,18 +143,26 @@ pub(crate) fn apply_full_round(state: &mut [Fp; STATE_WIDTH], step: usize) {
     apply_mds(state);
 }
 
-/// Poseidon full round function;
+/// Poseidon parial rounds function.
 #[inline(always)]
-pub(crate) fn apply_partial_round(state: &mut [Fp; STATE_WIDTH], step: usize) {
-    // determine which round constants to use
-    let ark = round_constants::ARK[step % (2 * NUM_HALF_FULL_ROUNDS + NUM_PARTIAL_ROUNDS)];
-
+pub(crate) fn apply_partial_rounds(state: &mut [Fp; STATE_WIDTH]) {
+    // Initial constants addition
+    let ark = ARK[NUM_HALF_FULL_ROUNDS];
     for i in 0..STATE_WIDTH {
         state[i] += ark[i];
     }
 
+    apply_mi(state);
+
+    for r in 0..NUM_PARTIAL_ROUNDS - 1 {
+        pow_7(&mut state[0]);
+        state[0] += ARK[NUM_HALF_FULL_ROUNDS + r + 1][0];
+        cheap_matrix_mul(state, r);
+    }
+
+    // Last round
     pow_7(&mut state[0]);
-    apply_mds(state);
+    cheap_matrix_mul(state, NUM_PARTIAL_ROUNDS - 1);
 }
 
 #[cfg(test)]
@@ -124,70 +171,70 @@ mod tests {
     use rand_core::OsRng;
 
     const INV_MDS: [Fp; STATE_WIDTH * STATE_WIDTH] = [
-        Fp::new(5232231990142370708),
-        Fp::new(1456292618197229064),
-        Fp::new(2585965691860279897),
-        Fp::new(8596043838921749788),
-        Fp::new(8501843150900594164),
-        Fp::new(15661370495349411547),
-        Fp::new(8335511691205600286),
-        Fp::new(9472710036860008327),
-        Fp::new(12909463115742621643),
-        Fp::new(17812790881402916949),
-        Fp::new(17084854063114100360),
-        Fp::new(1743778736584506472),
-        Fp::new(931032031734907883),
-        Fp::new(1182029477279544872),
-        Fp::new(4218744783891988473),
-        Fp::new(16674624160942802487),
-        Fp::new(2105794376044984331),
-        Fp::new(11936208987889491064),
-        Fp::new(3020825386030820825),
-        Fp::new(16385199278367979228),
-        Fp::new(15663647911850050672),
-        Fp::new(13385591541441954316),
-        Fp::new(10851630570597723463),
-        Fp::new(4009661047516767761),
-        Fp::new(3257879938515494937),
-        Fp::new(17198486073375638065),
-        Fp::new(5354045220144466484),
-        Fp::new(1350784205834799709),
-        Fp::new(70213105078461578),
-        Fp::new(1303555312236393700),
-        Fp::new(10775713498649348807),
-        Fp::new(11941690491548710456),
-        Fp::new(1362147347033862645),
-        Fp::new(4465586076580454760),
-        Fp::new(3496493523135751019),
-        Fp::new(8152485191176261434),
-        Fp::new(14326166154068252015),
-        Fp::new(11352384956803611766),
-        Fp::new(16036981034433906839),
-        Fp::new(6095410813907601113),
-        Fp::new(13638149741021140024),
-        Fp::new(3727429434539678642),
-        Fp::new(1214738526414198494),
-        Fp::new(919217129542191474),
-        Fp::new(10705274983492634622),
-        Fp::new(11625725003743044981),
-        Fp::new(9985537962900532294),
-        Fp::new(3026827904242613038),
-        Fp::new(15810453901481577735),
-        Fp::new(6918287518874692323),
-        Fp::new(4549388663112521530),
-        Fp::new(13958999623219919370),
-        Fp::new(12799213451866585641),
-        Fp::new(7736627847927338554),
-        Fp::new(6988424089742464285),
-        Fp::new(16371861096259113405),
-        Fp::new(15530649383689463387),
-        Fp::new(12515141549291147991),
-        Fp::new(1079698422632889951),
-        Fp::new(17605257525871053374),
-        Fp::new(2371697140819154646),
-        Fp::new(16208462304098589476),
-        Fp::new(15354444556517360040),
-        Fp::new(11228143819241617025),
+        Fp::new(2805993759005513109),
+        Fp::new(9147504304377222261),
+        Fp::new(10186790348949908466),
+        Fp::new(14593887338999270741),
+        Fp::new(754246057045137869),
+        Fp::new(7032091965313564683),
+        Fp::new(1582334361384110419),
+        Fp::new(3397285519391949275),
+        Fp::new(4854500844368524779),
+        Fp::new(10098090430690574760),
+        Fp::new(4776794689272624636),
+        Fp::new(3824493624547477502),
+        Fp::new(7880080516980618326),
+        Fp::new(4784754318766922912),
+        Fp::new(14682982126367272069),
+        Fp::new(11048698798146136721),
+        Fp::new(5728540872142733961),
+        Fp::new(4480410893053871176),
+        Fp::new(7179190529091425284),
+        Fp::new(15335996858688509857),
+        Fp::new(15979436587334165290),
+        Fp::new(12698028971270457269),
+        Fp::new(6656122556167367674),
+        Fp::new(12716264955457801139),
+        Fp::new(12533436531238616290),
+        Fp::new(12459430509359113179),
+        Fp::new(2872844384164053774),
+        Fp::new(12834621551333490355),
+        Fp::new(9489022079507955045),
+        Fp::new(18093193875432168257),
+        Fp::new(5762615595691466663),
+        Fp::new(15045951268629825033),
+        Fp::new(3696383206447714891),
+        Fp::new(1656434615172430686),
+        Fp::new(2582746653014872077),
+        Fp::new(2466838098042195452),
+        Fp::new(5554473912855733206),
+        Fp::new(10581922113031912974),
+        Fp::new(9702048306507161406),
+        Fp::new(16027878415542328398),
+        Fp::new(7695647565936145912),
+        Fp::new(1841536849998909894),
+        Fp::new(8207677599946233797),
+        Fp::new(984489521811764857),
+        Fp::new(10552204016652084011),
+        Fp::new(3237030036341585333),
+        Fp::new(12468842907344746891),
+        Fp::new(3654783101089988815),
+        Fp::new(16163777916280498426),
+        Fp::new(11432309482951562857),
+        Fp::new(3933091443675401050),
+        Fp::new(10725456228255711758),
+        Fp::new(936322145433461710),
+        Fp::new(12414383897933578835),
+        Fp::new(8468500546255459165),
+        Fp::new(10294541324314731828),
+        Fp::new(15262814459942401561),
+        Fp::new(3044730265830350360),
+        Fp::new(16180800363771856626),
+        Fp::new(9094248992460577815),
+        Fp::new(4758274616028203942),
+        Fp::new(435133410534299348),
+        Fp::new(9477478930753224752),
+        Fp::new(6484449757558383252),
     ];
 
     /// Applies matrix-vector multiplication of the current
