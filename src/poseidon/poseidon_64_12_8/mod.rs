@@ -68,9 +68,10 @@ pub(crate) fn apply_mds(state: &mut [Fp; STATE_WIDTH]) {
 /// The matrix is in transposed form.
 pub(crate) fn apply_mi(state: &mut [Fp; STATE_WIDTH]) {
     let mut result = [Fp::zero(); STATE_WIDTH];
-    for (i, r) in result.iter_mut().enumerate() {
-        for (j, s) in state.iter().enumerate() {
-            *r += mds::M_I[j][i] * s;
+    result[0] = state[0];
+    for (i, r) in result.iter_mut().enumerate().skip(1) {
+        for (j, s) in state.iter().enumerate().skip(1) {
+            *r += mds::M_I[j * STATE_WIDTH + i] * s;
         }
     }
 
