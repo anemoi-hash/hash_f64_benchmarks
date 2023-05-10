@@ -81,23 +81,27 @@ pub(crate) fn apply_mi(state: &mut [Fp; STATE_WIDTH]) {
 /// Applies matrix-vector multiplication of the current
 /// hash state with the Poseidon MDS matrix.
 pub(crate) fn cheap_matrix_mul(state: &mut [Fp; STATE_WIDTH], round: usize) {
-    let mut column_1 = [mds::M_00; STATE_WIDTH];
-    column_1[1..].copy_from_slice(&mds::W_HAT[NUM_PARTIAL_ROUNDS - round - 1]);
-
-    let res_0 = column_1.iter().zip(state.iter()).map(|(a, b)| a * b).sum();
-    let mul_row: Vec<Fp> = mds::V_COL[NUM_PARTIAL_ROUNDS - round - 1]
+    let res_0 = mds::W_HAT[NUM_PARTIAL_ROUNDS - round - 1]
         .iter()
-        .take(STATE_WIDTH - 1)
+        .zip(state.iter())
+        .map(|(a, b)| a * b)
+        .sum();
+    let mul_row: [Fp; STATE_WIDTH] = mds::V_COL[NUM_PARTIAL_ROUNDS - round - 1]
+        .iter()
         .map(|x| x * state[0])
-        .collect();
-    let add_row: Vec<Fp> = mul_row
+        .collect::<Vec<Fp>>()
+        .try_into()
+        .unwrap();
+    let mut add_row: [Fp; STATE_WIDTH] = mul_row
         .iter()
-        .zip(state.iter().skip(1))
+        .zip(state.iter())
         .map(|(x, y)| x + y)
-        .collect();
+        .collect::<Vec<Fp>>()
+        .try_into()
+        .unwrap();
 
-    state[0] = res_0;
-    state[1..].copy_from_slice(&add_row);
+    add_row[0] = res_0;
+    *state = add_row;
 }
 
 #[inline(always)]

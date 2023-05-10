@@ -160,8 +160,9 @@ pub(crate) const M_I: [[Fp; STATE_WIDTH]; STATE_WIDTH] = [
     ],
 ];
 
-pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
+pub(crate) const V_COL: [[Fp; STATE_WIDTH]; NUM_PARTIAL_ROUNDS] = [
     [
+        Fp::zero(),
         Fp::new(14714234413772989334),
         Fp::new(15295442582497673479),
         Fp::new(2696925559007867278),
@@ -171,6 +172,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(3158367583368769003),
     ],
     [
+        Fp::zero(),
         Fp::new(17434648884499039172),
         Fp::new(15395171557141269351),
         Fp::new(17165130218314876351),
@@ -180,6 +182,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(7215420945515093878),
     ],
     [
+        Fp::zero(),
         Fp::new(17396816530289318624),
         Fp::new(10818042536989618729),
         Fp::new(3286812612465662602),
@@ -189,6 +192,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(4211188505236435417),
     ],
     [
+        Fp::zero(),
         Fp::new(13920731545234664628),
         Fp::new(13202538296811479702),
         Fp::new(4442397242288509728),
@@ -198,6 +202,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(1708356356398162853),
     ],
     [
+        Fp::zero(),
         Fp::new(7953196718822256178),
         Fp::new(11664155898882213900),
         Fp::new(7885959015860783051),
@@ -207,6 +212,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(8757968947205464174),
     ],
     [
+        Fp::zero(),
         Fp::new(9287716530172836684),
         Fp::new(9864232958758783932),
         Fp::new(12630587719892330711),
@@ -216,6 +222,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(13189122458756487660),
     ],
     [
+        Fp::zero(),
         Fp::new(7878426467880568926),
         Fp::new(2458143552811094413),
         Fp::new(1864114828393993565),
@@ -225,6 +232,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(3660794549807575902),
     ],
     [
+        Fp::zero(),
         Fp::new(8011156089730631401),
         Fp::new(12192090446642039270),
         Fp::new(13531436176528423855),
@@ -234,6 +242,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(774117055211209308),
     ],
     [
+        Fp::zero(),
         Fp::new(10187729073612718515),
         Fp::new(9831215990813509174),
         Fp::new(15894327751972047367),
@@ -243,6 +252,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(12941189046191301012),
     ],
     [
+        Fp::zero(),
         Fp::new(259529520163092294),
         Fp::new(6678737766211136590),
         Fp::new(971968362182839516),
@@ -252,6 +262,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(3137875695092797832),
     ],
     [
+        Fp::zero(),
         Fp::new(1373803839828072035),
         Fp::new(8722324625935338590),
         Fp::new(15183481750700167211),
@@ -261,6 +272,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(3685347770567811932),
     ],
     [
+        Fp::zero(),
         Fp::new(13153581878748812938),
         Fp::new(4435858640749877085),
         Fp::new(5536862541576354420),
@@ -270,6 +282,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(14265925088526361110),
     ],
     [
+        Fp::zero(),
         Fp::new(4620840999367217461),
         Fp::new(9134293570234229924),
         Fp::new(17166279391362831041),
@@ -279,6 +292,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(12312420844101303761),
     ],
     [
+        Fp::zero(),
         Fp::new(1654629273931315435),
         Fp::new(18254965379032004659),
         Fp::new(8880869464815497145),
@@ -288,6 +302,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(8173461891987916228),
     ],
     [
+        Fp::zero(),
         Fp::new(3315127955573276263),
         Fp::new(1051471900491075124),
         Fp::new(16657921117706684514),
@@ -297,6 +312,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(14381341306358726870),
     ],
     [
+        Fp::zero(),
         Fp::new(17052097107742048020),
         Fp::new(7438923376739246340),
         Fp::new(8135064217904846460),
@@ -306,6 +322,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(9014555022063543799),
     ],
     [
+        Fp::zero(),
         Fp::new(15559204037314418191),
         Fp::new(2890334797296737012),
         Fp::new(4191660376196357349),
@@ -315,6 +332,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(155897827789606440),
     ],
     [
+        Fp::zero(),
         Fp::new(3367423674765160956),
         Fp::new(12928436102312095142),
         Fp::new(7456338901332129971),
@@ -324,6 +342,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(1576114184934801301),
     ],
     [
+        Fp::zero(),
         Fp::new(3475085957796945797),
         Fp::new(3295849077756365516),
         Fp::new(9438697043878875672),
@@ -333,6 +352,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(11788246494843619827),
     ],
     [
+        Fp::zero(),
         Fp::new(4838430657107732788),
         Fp::new(9355951818074364835),
         Fp::new(15403830109779901164),
@@ -342,6 +362,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(5647842928246683832),
     ],
     [
+        Fp::zero(),
         Fp::new(17022142438444346336),
         Fp::new(17152505894966579525),
         Fp::new(2482349221949635510),
@@ -351,6 +372,7 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(7569882159656954547),
     ],
     [
+        Fp::zero(),
         Fp::new(14435535831228617659),
         Fp::new(1796720195831182232),
         Fp::new(1442360747831927003),
@@ -361,8 +383,9 @@ pub(crate) const V_COL: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
     ],
 ];
 
-pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
+pub(crate) const W_HAT: [[Fp; STATE_WIDTH]; NUM_PARTIAL_ROUNDS] = [
     [
+        Fp::new(15665739677678329448),
         Fp::new(17232883515396795863),
         Fp::new(14236601672255005261),
         Fp::new(6833728164056015567),
@@ -372,6 +395,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(6219350691475573577),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(4661801157882984172),
         Fp::new(6580924646000666874),
         Fp::new(1491456614677402743),
@@ -381,6 +405,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(14407132943251198789),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(314947281145154056),
         Fp::new(2639276743140882414),
         Fp::new(18359617890805587632),
@@ -390,6 +415,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(3645734884209347175),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(608875068351247300),
         Fp::new(10513948249862711204),
         Fp::new(16042957565259377754),
@@ -399,6 +425,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(4883015024678323663),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(2671808849846657829),
         Fp::new(18099494010101798878),
         Fp::new(9332824505110791188),
@@ -408,6 +435,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(7884162349068708932),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(18055148734663628248),
         Fp::new(9779014104285707040),
         Fp::new(10076064710657143718),
@@ -417,6 +445,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(6946854582558382830),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(8636118467569073221),
         Fp::new(9019105853311912199),
         Fp::new(9683845632922380100),
@@ -426,6 +455,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(13979627164078645610),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(10208810653387952974),
         Fp::new(1822699096543926793),
         Fp::new(3059924690378257357),
@@ -435,6 +465,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(10822129188448966135),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(3074903898833815658),
         Fp::new(5836424161120531724),
         Fp::new(16579797455531270547),
@@ -444,6 +475,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(2740237490072006335),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(12770176443797132592),
         Fp::new(8846000752338083651),
         Fp::new(10672378758952145557),
@@ -453,6 +485,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(17521646125737263736),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(10477798739121162779),
         Fp::new(6298727276747768874),
         Fp::new(11013708236169365910),
@@ -462,6 +495,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(5232943736465415166),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(6783768545294738226),
         Fp::new(14678703841381030384),
         Fp::new(9983741824202831481),
@@ -471,6 +505,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(14067258760709817042),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(13448256280298132724),
         Fp::new(10276774410130051289),
         Fp::new(13925975751618149941),
@@ -480,6 +515,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(3249793397834684295),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(7410641574912520668),
         Fp::new(15320816675489988652),
         Fp::new(5657763507863891187),
@@ -489,6 +525,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(17602658866987624023),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(10994047073907868483),
         Fp::new(8216641614210664126),
         Fp::new(3503858270552599384),
@@ -498,6 +535,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(18149748225829126241),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(8375970984005269224),
         Fp::new(3435980036161356512),
         Fp::new(5767070434603677324),
@@ -507,6 +545,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(7183095870196989032),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(17557010166753490623),
         Fp::new(14028280845694952237),
         Fp::new(12914216367085308653),
@@ -516,6 +555,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(17831160909507072350),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(14343470352978796062),
         Fp::new(15918016519014119368),
         Fp::new(1517569989932517265),
@@ -525,6 +565,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(12383051004075138289),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(16814247010191196818),
         Fp::new(8247690514607887002),
         Fp::new(5331770784558034365),
@@ -534,6 +575,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(13690790489809218463),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(18425006711959819293),
         Fp::new(2234547165584397360),
         Fp::new(187374063863358105),
@@ -543,6 +585,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(16320520364905964003),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(11071864438782463275),
         Fp::new(6496150729843188361),
         Fp::new(86943579747116357),
@@ -552,6 +595,7 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(219373675070972461),
     ],
     [
+        Fp::new(15665739677678329448),
         Fp::new(10829072901710157659),
         Fp::new(11409850929191849698),
         Fp::new(12797502451450543895),
@@ -561,5 +605,3 @@ pub(crate) const W_HAT: [[Fp; STATE_WIDTH - 1]; NUM_PARTIAL_ROUNDS] = [
         Fp::new(1852895931045625524),
     ],
 ];
-
-pub(crate) const M_00: Fp = Fp::new(15665739677678329448);
