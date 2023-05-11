@@ -22,6 +22,9 @@ pub use hasher::PoseidonHash;
 
 use self::round_constants::ARK;
 
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
+
 // RESCUE CONSTANTS
 // ================================================================================================
 
