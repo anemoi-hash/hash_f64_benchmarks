@@ -26,7 +26,7 @@ Below are running times obtained on an Intel® Core™ i7-9750H CPU @ 2.60GHz ×
 
 | Running time       | Anemoi 8-4 | Griffin 8-4 | Griffin 12-8 | RP 8-4  | RP 12-8  | Poseidon 8-4 | Poseidon 12-8 |
 | ------------------ | :--------: | :---------: | :----------: | :-----: | :------: | :----------: | :-----------: |
-| 2-to-1 compression | 4.21 µs    | 2.59 µs     | 2.87 µs      | 9.13 µs | 15.67 µs | 4.46 µs      | 12.09 µs      |
+| 2-to-1 compression | 4.21 µs    | 2.59 µs     | 2.87 µs      | 9.13 µs | 15.67 µs | 2.69 µs      | 5.87 µs      |
 
 ## License
 
